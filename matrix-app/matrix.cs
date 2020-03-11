@@ -118,6 +118,8 @@ namespace Amakazor
                     matrixList[i][j] = otherMatrixList[i][j];
                 }
             }
+
+            LongestElement = CalculateLongestElement();
             Log("Other matrix copied.");
         }
 
