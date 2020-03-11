@@ -103,6 +103,36 @@ namespace Amakazor
             }
         }
 
+        public void Copy(Matrix toCopy)
+        {
+            Log("Copying other matrix...");
+            int otherRows = toCopy.GetNumberOfRows();
+            int otherColumns = toCopy.GetNumberOfColumns();
+
+            List<List<long>> otherMatrixList = toCopy.MatrixList;
+
+            matrixList.Clear();
+            EnableLogging = toCopy.EnableLogging;
+
+            if (otherColumns == otherRows)
+            {
+                InitializeSquare(otherRows);
+            }
+            else
+            {
+                InitializeRect(otherRows, otherColumns);
+            }
+
+            for (int i = 0; i < otherRows; i++)
+            {
+                for (int j = 0; j < otherColumns; j++)
+                {
+                    matrixList[i][j] = otherMatrixList[i][j];
+                }
+            }
+            Log("Other matrix copied.");
+        }
+
         public void Display()
         {
             Log("Displaying matrix...");
@@ -145,9 +175,14 @@ namespace Amakazor
             Log("Matrix displayed.");
         }
 
+        public int GetNumberOfRows()
+        {
+            return matrixList.Count;
+        }
+
         public int GetNumberOfColumns()
         {
-            if (matrixList.Count > 0)
+            if (GetNumberOfRows() > 0)
             {
                 return matrixList[0].Count;
             }
@@ -166,6 +201,14 @@ namespace Amakazor
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(message);
                 Console.ForegroundColor = CurrentColor;
+            }
+        }
+
+        public List<List<long>> MatrixList
+        {
+            get
+            {
+                return matrixList;
             }
         }
 
@@ -203,10 +246,11 @@ namespace Amakazor
             return maxLenght;
         }
 
-
         private int CalculateLongLength(long input)
         {
             return (input != 0 ? ((int)Math.Floor(Math.Log10(Math.Abs(input)) + 1)) + (input < 0 ? 1 : 0) : 1);
         }
+
+        
     }
 }
