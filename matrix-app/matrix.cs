@@ -7,10 +7,9 @@ using Amakazor;
 
 namespace Amakazor
 {
-    class Matrix : LoggingInterface
+    class Matrix : ILoggingInterface
     {
         private List<List<long>> matrixList;
-        private bool enableLogging;
         private int LongestElement;
 
         public Matrix()
@@ -90,18 +89,7 @@ namespace Amakazor
             Log("Matrix constructed.");
         }
 
-        public bool EnableLogging
-        {
-            get
-            {
-                return enableLogging;
-            }
-
-            set
-            {
-                enableLogging = value;
-            }
-        }
+        public bool EnableLogging { get; set; }
 
         public void Copy(Matrix toCopy)
         {

@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Amakazor
 {
-    interface LoggingInterface
+    interface ILoggingInterface
     {
+        bool EnableLogging { get; set; }
+
         void Log(string message);
     }
 }
