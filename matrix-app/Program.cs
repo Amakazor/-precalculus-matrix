@@ -11,7 +11,12 @@ namespace matrix_app
     {
         static void Main(string[] args)
         {
-            
+            Matrix m1 = new Matrix(4, 6);
+            m1.RandomizeMatrix(-10, 10);
+            m1.Display();
+
+
+            Console.ReadKey();
         }
     }
 }
