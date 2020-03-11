@@ -15,6 +15,10 @@ namespace matrix_app
             m1.RandomizeMatrix(-10, 10);
             m1.Display();
 
+            Matrix m2 = new Matrix(true);
+            m2.Copy(m1);
+            m2.Display();
+
 
             Console.ReadKey();
         }
