@@ -142,7 +142,7 @@ namespace Amakazor
                 Console.Write('\u2518');
                 Console.Write('\n');
             }
-            Log("Matrix was displayed.");
+            Log("Matrix displayed.");
         }
 
         public int GetNumberOfColumns()
