@@ -12,63 +12,22 @@ namespace Amakazor
         private List<List<long>> matrixList;
         private int LongestElement;
 
-        public Matrix()
-        {
-            InitializeEmpty();
-        }
-        
-        public Matrix(bool Logging)
-        {
-            EnableLogging = Logging;
-            InitializeEmpty();
-        }
-
-        public Matrix(int size)
-        {
-            InitializeSquare(size);
-        }
-        
-        public Matrix(int size, bool Logging)
-        {
-            EnableLogging = Logging;
-            InitializeSquare(size);
-        }
-
-        public Matrix(int rows, int columns)
-        {
-            InitializeRect(rows, columns);
-        }
-        
+        public Matrix() : this(0, 0, false) { }
+        public Matrix(bool Logging) : this(0, 0, Logging) { }
+        public Matrix(int size) : this(size, size, false) { }
+        public Matrix(int size, bool Logging) : this(size, size, Logging) { }
+        public Matrix(int rows, int columns) : this(rows, columns, false) { }
         public Matrix(int rows, int columns, bool Logging)
         {
             EnableLogging = Logging;
             InitializeRect(rows, columns);
         }
-
-        private void InitializeEmpty()
+        public Matrix(Matrix toCopy) : this(toCopy, false) { }
+        public Matrix(Matrix toCopy, bool Logging)
         {
-            Log("Constructing empty matrix...");
-            matrixList = new List<List<long>>();
-            LongestElement = 0;
-            Log("Empty matrix constructed.");
-        }
-
-        private void InitializeSquare(int size)
-        {
-            Log("Constructing matrix...");
-            matrixList = new List<List<long>>(size);
-            for (int i = 0; i < size; i++)
-            {
-                matrixList.Add(new List<long>(size));
-
-                for (int j = 0; j < size; j++)
-                {
-                    matrixList[i].Add(0);
-                }
-            }
-
-            this.LongestElement = CalculateLongestElement();
-            Log("Matrix constructed.");
+            EnableLogging = Logging;
+            Copy(toCopy);
+            EnableLogging = Logging;
         }
 
         private void InitializeRect(int rows, int columns)
@@ -85,13 +44,13 @@ namespace Amakazor
                 }
             }
 
-            this.LongestElement = CalculateLongestElement();
+            LongestElement = CalculateLongestElement();
             Log("Matrix constructed.");
         }
 
         public bool EnableLogging { get; set; }
 
-        public void Copy(Matrix toCopy)
+        public void Copy(Matrix toCopy, bool isNew = false)
         {
             Log("Copying other matrix...");
             int otherRows = toCopy.GetNumberOfRows();
@@ -99,18 +58,18 @@ namespace Amakazor
 
             List<List<long>> otherMatrixList = toCopy.MatrixList;
 
-            matrixList.Clear();
-            EnableLogging = toCopy.EnableLogging;
+            if (!isNew)
+            {
+                if (matrixList != null)
+                {
+                    matrixList.Clear();
+                }
 
-            if (otherColumns == otherRows)
-            {
-                InitializeSquare(otherRows);
-            }
-            else
-            {
-                InitializeRect(otherRows, otherColumns);
+                EnableLogging = toCopy.EnableLogging;
             }
 
+            InitializeRect(otherRows, otherColumns);
+            
             for (int i = 0; i < otherRows; i++)
             {
                 for (int j = 0; j < otherColumns; j++)
@@ -144,7 +103,7 @@ namespace Amakazor
                         foreach (long column in row)
                         {
                             Console.Write((column >= 0 ? " " : "")+column);
-                            for (int i = 0; i < (LongestElement - CalculateLongLength(column) + (column >= 0 ? 1 : 2)); i++)
+                            for (int i = 0; i < (LongestElement - CalculateElementLength(column) + (column >= 0 ? 1 : 2)); i++)
                             {
                                 Console.Write(' ');
                             }
@@ -215,7 +174,7 @@ namespace Amakazor
                 }
             }
 
-            this.LongestElement = CalculateLongestElement();
+            LongestElement = CalculateLongestElement();
             Log("Matrix randomized.");
         }
 
@@ -227,7 +186,7 @@ namespace Amakazor
             {
                 foreach (long column in row)
                 {
-                    int temp = CalculateLongLength(column);
+                    int temp = CalculateElementLength(column);
 
                     maxLenght = temp > maxLenght ? temp : maxLenght;
                 }
@@ -236,11 +195,9 @@ namespace Amakazor
             return maxLenght;
         }
 
-        private int CalculateLongLength(long input)
+        private int CalculateElementLength(long input)
         {
             return (input != 0 ? ((int)Math.Floor(Math.Log10(Math.Abs(input)) + 1)) + (input < 0 ? 1 : 0) : 1);
         }
-
-        
     }
 }
