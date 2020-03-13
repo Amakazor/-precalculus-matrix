@@ -87,39 +87,42 @@ namespace Amakazor
             Log("Displaying matrix...");
             if (matrixList.Count > 0)
             {
-                Console.Write('\u250C');
+                string outputBuffer = "";
+                outputBuffer += '\u250C';
                 for (int i = 0; i < GetNumberOfColumns() * (LongestElement + 2) + 1; i++)
                 {
-                    Console.Write(' ');
+                    outputBuffer +=' ';
                 }
-                Console.Write('\u2510');
-                Console.Write('\n');
+                outputBuffer += '\u2510';
+                outputBuffer += '\n';
 
                 foreach (List<long> row in matrixList)
                 {
-                    Console.Write("\u2502 ");
+                    outputBuffer += "\u2502 ";
                     if (row.Count > 0)
                     {
                         foreach (long column in row)
                         {
-                            Console.Write((column >= 0 ? " " : "")+column);
+                            outputBuffer += (column >= 0 ? " " : "")+column;
                             for (int i = 0; i < (LongestElement - CalculateElementLength(column) + (column >= 0 ? 1 : 2)); i++)
                             {
-                                Console.Write(' ');
+                                outputBuffer += ' ';
                             }
                         }
                     }
-                    Console.Write("\u2502");
-                    Console.Write('\n');
+                    outputBuffer += "\u2502";
+                    outputBuffer += '\n';
                 }
 
-                Console.Write('\u2514');
+                outputBuffer += '\u2514';
                 for (int i = 0; i < GetNumberOfColumns() * (LongestElement + 2) + 1; i++)
                 {
-                    Console.Write(' ');
+                    outputBuffer += ' ';
                 }
-                Console.Write('\u2518');
-                Console.Write('\n');
+                outputBuffer += '\u2518';
+                outputBuffer += '\n';
+
+                Console.Write(outputBuffer);
             }
             Log("Matrix displayed.");
         }
