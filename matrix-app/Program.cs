@@ -11,50 +11,19 @@ namespace matrix_app
     {
         static void Main(string[] args)
         {
-            Matrix m1 = new Matrix(4, 6, true);
-            m1.RandomizeMatrix(-10, 10);
-            m1.Display();
+            Fraction frac1 = new Fraction();
+            Fraction frac2 = new Fraction(7);
+            Fraction frac3 = new Fraction(21,7);
+            Fraction frac4 = new Fraction("28.4");
+            Fraction frac5 = new Fraction("4/16");
+            Fraction frac6 = new Fraction(2.5);
 
-            Matrix m2 = new Matrix(true);
-            m2.Copy(m1);
-            m2.Display();
-
-            Matrix m3 = new Matrix(3, true);
-            m3.RandomizeMatrix(-10, 10);
-            m3.Display();
-
-            Matrix m4 = new Matrix(m3, true);
-            m4.Display();
-            m4.RandomizeMatrix(-10, 10);
-
-            m3.Display();
-            m4.Display();
-
-            Matrix m5 = new Matrix(5, 5, true);
-            Matrix m6 = new Matrix(5, 5, true);
-
-            m5.RandomizeMatrix(-5, 5);
-            System.Threading.Thread.Sleep(10);
-            m6.RandomizeMatrix(-5, 5);
-
-            Matrix m7 = m5 + m6;
-
-            m5.Display();
-            m6.Display();
-            m7.Display();
-            
-            m5 = new Matrix(5, 5, true);
-            m6 = new Matrix(5, 5, true);
-
-            m5.RandomizeMatrix(-5, 5);
-            System.Threading.Thread.Sleep(10);
-            m6.RandomizeMatrix(-5, 5);
-
-            m7 = m5 - m6;
-
-            m5.Display();
-            m6.Display();
-            m7.Display();
+            frac1.Display();
+            frac2.Display();
+            frac3.Display();
+            frac4.Display();
+            frac5.Display();
+            frac6.Display();
 
             Console.ReadKey();
         }
