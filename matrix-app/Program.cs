@@ -30,6 +30,31 @@ namespace matrix_app
             m3.Display();
             m4.Display();
 
+            Matrix m5 = new Matrix(5, 5, true);
+            Matrix m6 = new Matrix(5, 5, true);
+
+            m5.RandomizeMatrix(-5, 5);
+            System.Threading.Thread.Sleep(10);
+            m6.RandomizeMatrix(-5, 5);
+
+            Matrix m7 = m5 + m6;
+
+            m5.Display();
+            m6.Display();
+            m7.Display();
+            
+            m5 = new Matrix(5, 5, true);
+            m6 = new Matrix(5, 5, true);
+
+            m5.RandomizeMatrix(-5, 5);
+            System.Threading.Thread.Sleep(10);
+            m6.RandomizeMatrix(-5, 5);
+
+            m7 = m5 - m6;
+
+            m5.Display();
+            m6.Display();
+            m7.Display();
 
             Console.ReadKey();
         }
