@@ -42,13 +42,14 @@ namespace Amakazor
         public void ConvertFromString(string toConvert)
         {
             ArgumentException notConvertible = new ArgumentException("String not convertible", "toConvert");
+            char decimalSeparator = Convert.ToChar(System.Threading.Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator);
 
             if (toConvert.Contains('/'))
             {
                 if (toConvert.IndexOf('/') == toConvert.LastIndexOf('/'))
                 {
                     string sNumerator = toConvert.Substring(0, toConvert.IndexOf('/'));
-                    string sDenominator = toConvert.Substring(toConvert.IndexOf('/'), toConvert.Length - 1);
+                    string sDenominator = toConvert.Substring(toConvert.IndexOf('/')+1, toConvert.Length - 2);
 
                     if (long.TryParse(sNumerator, out long tNumerator) && long.TryParse(sDenominator, out long tDenominator))
                     {
@@ -63,7 +64,29 @@ namespace Amakazor
             {
                 if (toConvert.IndexOf('.') == toConvert.LastIndexOf('.'))
                 {
-                    if (long.TryParse(toConvert, out long dToConvert))
+                    if ('.' != decimalSeparator)
+                    {
+                        toConvert = toConvert.Replace('.', ',');
+                    }
+
+                    if (double.TryParse(toConvert, out double dToConvert))
+                    {
+                        ConvertFromDouble(dToConvert);
+                    }
+                    else throw notConvertible;
+                }
+                else throw notConvertible;
+            }
+            else if (toConvert.Contains(','))
+            {
+                if (toConvert.IndexOf(',') == toConvert.LastIndexOf(','))
+                {
+                    if (',' != decimalSeparator)
+                    {
+                        toConvert = toConvert.Replace(',', '.');
+                    }
+
+                    if (double.TryParse(toConvert, out double dToConvert))
                     {
                         ConvertFromDouble(dToConvert);
                     }
