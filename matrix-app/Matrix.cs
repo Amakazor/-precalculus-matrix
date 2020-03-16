@@ -30,6 +30,58 @@ namespace Amakazor
             EnableLogging = Logging;
         }
 
+        public static Matrix operator +(Matrix a, Matrix b)
+        {
+            if (a.GetNumberOfColumns() != b.GetNumberOfColumns() || a.GetNumberOfRows() != b.GetNumberOfRows())
+            {
+                throw new ArgumentException("Matrices are not the same size");
+            }
+            else
+            {
+                Matrix outputMatrix = new Matrix(a.GetNumberOfRows(), a.GetNumberOfColumns(), a.EnableLogging);
+
+                List<List<long>> matrixListA = a.matrixList;
+                List<List<long>> matrixListB = b.matrixList;
+
+                for (int i = 0; i < a.GetNumberOfRows(); i++)
+                {
+                    for (int j = 0; j < a.GetNumberOfColumns(); j++)
+                    {
+                        outputMatrix.SetElement(i, j, matrixListA[i][j] + matrixListB[i][j]);
+                    }
+                }
+
+                outputMatrix.LongestElement = outputMatrix.CalculateLongestElement();
+                return outputMatrix;
+            }
+        }
+
+        public static Matrix operator -(Matrix a, Matrix b)
+        {
+            if (a.GetNumberOfColumns() != b.GetNumberOfColumns() || a.GetNumberOfRows() != b.GetNumberOfRows())
+            {
+                throw new ArgumentException("Matrices are not the same size");
+            }
+            else
+            {
+                Matrix outputMatrix = new Matrix(a.GetNumberOfRows(), a.GetNumberOfColumns(), a.EnableLogging);
+
+                List<List<long>> matrixListA = a.matrixList;
+                List<List<long>> matrixListB = b.matrixList;
+
+                for (int i = 0; i < a.GetNumberOfRows(); i++)
+                {
+                    for (int j = 0; j < a.GetNumberOfColumns(); j++)
+                    {
+                        outputMatrix.SetElement(i, j, matrixListA[i][j] - matrixListB[i][j]);
+                    }
+                }
+
+                outputMatrix.LongestElement = outputMatrix.CalculateLongestElement();
+                return outputMatrix;
+            }
+        }
+
         private void InitializeRect(int rows, int columns)
         {
             Log("Constructing matrix...");
@@ -179,6 +231,25 @@ namespace Amakazor
 
             LongestElement = CalculateLongestElement();
             Log("Matrix randomized.");
+        }
+
+        public void SetElement(int row, int column, long value)
+        {
+            if (row <= GetNumberOfRows() && column <= GetNumberOfColumns())
+            {
+                MatrixList[row][column] = value;
+            }
+            else
+            {
+                if (row > GetNumberOfRows())
+                {
+                    throw new ArgumentException("Row value is bigger than number of rows", "row");
+                }
+                else
+                {
+                    throw new ArgumentException("Column value is bigger than number of columns", "column");
+                }
+            }
         }
 
         private int CalculateLongestElement()
