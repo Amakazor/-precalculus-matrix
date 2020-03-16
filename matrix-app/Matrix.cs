@@ -82,6 +82,24 @@ namespace Amakazor
             }
         }
 
+        public static Matrix operator *(Matrix a, long b)
+        {
+            Matrix outputMatrix = new Matrix(a.GetNumberOfRows(), a.GetNumberOfColumns(), a.EnableLogging);
+
+            List<List<long>> matrixListA = a.matrixList;
+
+            for (int i = 0; i < a.GetNumberOfRows(); i++)
+            {
+                for (int j = 0; j < a.GetNumberOfColumns(); j++)
+                {
+                    outputMatrix.SetElement(i, j, matrixListA[i][j] * b);
+                }
+            }
+
+            outputMatrix.LongestElement = outputMatrix.CalculateLongestElement();
+            return outputMatrix;
+        }
+
         private void InitializeRect(int rows, int columns)
         {
             Log("Constructing matrix...");
