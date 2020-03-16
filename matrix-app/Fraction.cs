@@ -20,27 +20,36 @@ namespace Amakazor
         {
             EnableLogging = logging;
 
+            Log("Constructing fraction...");
             Numerator = numerator;
             Denominator = denominator;
             Normalize();
+            Log("Fraction constructed.");
         }
         public Fraction(string toConvert) : this(toConvert, false) { }
         public Fraction(string toConvert, bool logging)
         {
             EnableLogging = logging;
+
+            Log("Constructing fraction...");
             ConvertFromString(toConvert);
             Normalize();
+            Log("Fraction constructed.");
         }
         public Fraction(double toConvert) : this(toConvert, false) { }
         public Fraction(double toConvert, bool logging)
         {
             EnableLogging = logging;
+
+            Log("Constructing fraction...");
             ConvertFromDouble(toConvert);
             Normalize();
+            Log("Fraction constructed.");
         }
 
         public void ConvertFromString(string toConvert)
         {
+            Log("Converting fraction from string...");
             ArgumentException notConvertible = new ArgumentException("String not convertible", "toConvert");
             char decimalSeparator = Convert.ToChar(System.Threading.Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator);
 
@@ -53,6 +62,7 @@ namespace Amakazor
 
                     if (long.TryParse(sNumerator, out long tNumerator) && long.TryParse(sDenominator, out long tDenominator))
                     {
+                        Log("String represents fraction separated by \"/\" symbol.");
                         Numerator = tNumerator;
                         Denominator = tDenominator;
                     }
@@ -71,6 +81,7 @@ namespace Amakazor
 
                     if (double.TryParse(toConvert, out double dToConvert))
                     {
+                        Log("String represents double.");
                         ConvertFromDouble(dToConvert);
                     }
                     else throw notConvertible;
@@ -88,6 +99,7 @@ namespace Amakazor
 
                     if (double.TryParse(toConvert, out double dToConvert))
                     {
+                        Log("String represents double.");
                         ConvertFromDouble(dToConvert);
                     }
                     else throw notConvertible;
@@ -98,15 +110,19 @@ namespace Amakazor
             {
                 if (long.TryParse(toConvert, out long tNumerator))
                 {
+                    Log("String represents integer.");
                     Numerator = tNumerator;
                     Denominator = 1;
                 }
                 else throw notConvertible;
             }
+
+            Log("Converted fraction from string.");
         }
 
         public void ConvertFromDouble(double toConvert)
         {
+            Log("Converting fraction from double...");
             long tDenominator = 1;
 
             while ((toConvert % 1) != 0)
@@ -117,18 +133,24 @@ namespace Amakazor
 
             Numerator = (int)toConvert;
             Denominator = tDenominator;
+            Log("Converted fraction from double.");
         }
 
         public void Display()
         {
+            Log("Displaying fraction...");
             Console.WriteLine(Numerator + "/" + Denominator);
+            Log("Fraction displayed.");
         }
 
         public void Normalize()
         {
+            Log("Normalizing fraction...");
             long GCD = GetGCD(Numerator, Denominator);
+            Log("Found greatest common divisor. It is " + GCD);
             Numerator   /= GCD;
             Denominator /= GCD;
+            Log("Fraction normalized.");
         }
 
         public bool EnableLogging { get; set; }
