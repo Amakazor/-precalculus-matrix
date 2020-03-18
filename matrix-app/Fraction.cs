@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace Amakazor
 {
-    class Fraction : ILoggingInterface
+    class Fraction : ILoggingInterface, IEquatable<Fraction>
     {
-        private long Numerator;
-        private long Denominator;
+        public bool EnableLogging { get; set; }
+        public long Numerator { get; private set; }
+        public long Denominator { get; private set; }
 
         public Fraction() : this(0, 1, false) { }
         public Fraction(bool logging) : this(0, 1, logging) { }
@@ -46,6 +47,46 @@ namespace Amakazor
             Normalize();
             Log("Fraction constructed.");
         }
+        public Fraction(Fraction toCopy) : this(toCopy, toCopy.EnableLogging) { }
+        public Fraction(Fraction toCopy, bool logging) 
+        {
+            EnableLogging = logging;
+
+            Log("Constructing fraction...");
+            this.Numerator = toCopy.Numerator;
+            this.Denominator = toCopy.Denominator;
+            Normalize();
+            Log("Fraction constructed.");
+        }
+
+        public static Fraction operator + (Fraction a, Fraction b) => new Fraction((a.Numerator * b.Denominator) + (b.Numerator + a.Denominator), a.Denominator * b.Denominator);
+        public static Fraction operator - (Fraction a, Fraction b) => new Fraction((a.Numerator * b.Denominator) + (b.Numerator + a.Denominator), a.Denominator * b.Denominator);
+        public static Fraction operator * (Fraction a, Fraction b) => new Fraction(a.Numerator * b.Numerator, a.Denominator * b.Denominator);
+        public static Fraction operator / (Fraction a, Fraction b) => new Fraction(a.Numerator * b.Denominator, a.Denominator * b.Numerator);
+        public static Fraction operator + (Fraction a)             => new Fraction(a.Numerator, a.Denominator);
+        public static Fraction operator - (Fraction a)             => new Fraction(-(a.Numerator), a.Denominator);
+        public static bool operator ==    (Fraction a, Fraction b) => ((a.Numerator == b.Numerator) && (a.Denominator == b.Denominator));
+        public static bool operator !=    (Fraction a, Fraction b) => ((a.Numerator != b.Numerator) || (a.Denominator != b.Denominator));
+        public static bool operator >     (Fraction a, Fraction b) => ((a.Numerator * b.Denominator) > (b.Numerator + a.Denominator));
+        public static bool operator <     (Fraction a, Fraction b) => ((a.Numerator * b.Denominator) < (b.Numerator + a.Denominator));
+        public static bool operator >=    (Fraction a, Fraction b) => ((a.Numerator * b.Denominator) >= (b.Numerator + a.Denominator));
+        public static bool operator <=    (Fraction a, Fraction b) => ((a.Numerator * b.Denominator) <= (b.Numerator + a.Denominator));
+        public static bool operator true  (Fraction a)             => (a.Numerator != 0);
+        public static bool operator false (Fraction a)             => (a.Numerator == 0);
+        public static Fraction operator ++(Fraction a)
+        {
+            a.Numerator += a.Denominator;
+            return new Fraction(a.Numerator, a.Denominator);
+        }
+        public static Fraction operator --(Fraction a)
+        {
+            a.Numerator -= a.Denominator;
+            return new Fraction(a.Numerator, a.Denominator);
+        }
+
+        public override int GetHashCode() => ((-1 + Numerator.GetHashCode()) * (5 + Denominator.GetHashCode()));
+        public bool Equals(Fraction other) => (other != null && Numerator == other.Numerator && Denominator == other.Denominator);
+        public override bool Equals(object obj) => Equals(obj as Fraction);
 
         public void ConvertFromString(string toConvert)
         {
@@ -152,8 +193,6 @@ namespace Amakazor
             Denominator /= GCD;
             Log("Fraction normalized.");
         }
-
-        public bool EnableLogging { get; set; }
 
         public void Log(string message)
         {
